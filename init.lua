@@ -96,7 +96,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -374,6 +374,7 @@ require('lazy').setup({
         end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
+			
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
@@ -668,9 +669,13 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+         clangd = {},
         -- gopls = {},
-        -- pyright = {},
+         pyright = {
+		settings = {
+		python = { analysis = { diagnosticMode = "workspace", autoImportCompletions = true } },
+		},
+	},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -721,6 +726,7 @@ require('lazy').setup({
         automatic_installation = false,
         handlers = {
           function(server_name)
+						
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
@@ -941,7 +947,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'python'},
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -1031,6 +1037,7 @@ vim.g.mkdp_highlight_css = '~/.config/nvim/highlight.css' -- code blocks
 vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
   pattern = "*",
   callback = function()
+		
     if vim.fn.expand("%") ~= "" and vim.bo.modifiable and not vim.bo.readonly then
       vim.cmd("silent write")
     end
@@ -1044,3 +1051,27 @@ vim.g.neovide_padding_top = 0
 vim.g.neovide_padding_bottom = 0
 vim.g.neovide_padding_right = 0
 vim.g.neovide_padding_left = 0
+
+local yellow = "#f2e900"
+local green  = "#4bff21"
+
+local function recolor()
+  -- keywords
+  vim.api.nvim_set_hl(0, "@keyword", { fg = yellow }) -- def
+  vim.api.nvim_set_hl(0, "@keyword.function", { fg = yellow }) -- def
+  vim.api.nvim_set_hl(0, "@keyword.conditional",      { fg = yellow }) -- if/else/while
+  vim.api.nvim_set_hl(0, "@keyword.repeat",           { fg = yellow }) -- for/while
+  -- function names (defs + calls)
+  vim.api.nvim_set_hl(0, "@function",         { fg = green,  bold = true })
+  vim.api.nvim_set_hl(0, "@function.call",    { fg = green,  bold = true })
+  vim.api.nvim_set_hl(0, "@function.method",    { fg = green,  bold = true })
+  vim.api.nvim_set_hl(0, "@function.method.call",    { fg = green,  bold = true })
+  -- LSP semantic tokens can override Treesitter; force them too:
+  vim.api.nvim_set_hl(0, "@lsp.type.function",{ fg = green,  bold = true })
+  vim.api.nvim_set_hl(0, "@lsp.type.method",{ fg = green,  bold = true })
+end
+
+recolor()
+vim.api.nvim_create_autocmd("ColorScheme", { callback = recolor })
+
+vim.api.nvim_set_hl(0, "Normal", { bg = "#000000", fg = "#FFFFFF" })
