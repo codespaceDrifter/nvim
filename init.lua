@@ -1052,26 +1052,78 @@ vim.g.neovide_padding_bottom = 0
 vim.g.neovide_padding_right = 0
 vim.g.neovide_padding_left = 0
 
-local yellow = "#f2e900"
+
+
+
+local white = "#ffffff"
+local black = "#000000"
+
+local yellow = "#FFFF00"
 local green  = "#4bff21"
 
+local pink = "#ffbae4"
+
+local cyan = "#05d9e8"
+
+local red = "#ff2a6d"
+
+local grey = "#808080"
+
 local function recolor()
-  -- keywords
+  -- class types
+  vim.api.nvim_set_hl(0, "@type", {fg = red})
+  vim.api.nvim_set_hl(0, "@type.definition",     { fg=red, italic=true })
+
+  -- variables
+  vim.api.nvim_set_hl(0, "@variable",            { fg= white}) -- plain vars
+  vim.api.nvim_set_hl(0, "@variable.builtin",            { fg= white}) -- plain vars
+  vim.api.nvim_set_hl(0, "@variable.member",            { fg= white}) -- plain vars
+  vim.api.nvim_set_hl(0, "@variable.parameter",  { fg= white}) -- params
+  vim.api.nvim_set_hl(0, "@field",               { fg= white}) -- white.field
+  vim.api.nvim_set_hl(0, "@property",               { fg= white}) -- white.field
+
+  -- primitives
+  vim.api.nvim_set_hl(0, "@string",              { fg= pink})
+  vim.api.nvim_set_hl(0, "@number",              { fg= pink})
+  vim.api.nvim_set_hl(0, "@boolean",             { fg= pink})
+
+  -- language keywords
   vim.api.nvim_set_hl(0, "@keyword", { fg = yellow }) -- def
   vim.api.nvim_set_hl(0, "@keyword.function", { fg = yellow }) -- def
   vim.api.nvim_set_hl(0, "@keyword.conditional",      { fg = yellow }) -- if/else/while
   vim.api.nvim_set_hl(0, "@keyword.repeat",           { fg = yellow }) -- for/while
+
   -- function names (defs + calls)
   vim.api.nvim_set_hl(0, "@function",         { fg = green,  bold = true })
   vim.api.nvim_set_hl(0, "@function.call",    { fg = green,  bold = true })
   vim.api.nvim_set_hl(0, "@function.method",    { fg = green,  bold = true })
   vim.api.nvim_set_hl(0, "@function.method.call",    { fg = green,  bold = true })
-  -- LSP semantic tokens can override Treesitter; force them too:
-  vim.api.nvim_set_hl(0, "@lsp.type.function",{ fg = green,  bold = true })
-  vim.api.nvim_set_hl(0, "@lsp.type.method",{ fg = green,  bold = true })
+  vim.api.nvim_set_hl(0, "@operator",    { fg = green,  bold = true })
+
+  -- parenthesis
+  vim.api.nvim_set_hl(0, "@punctuation.bracket",   { fg= cyan }) -- (), {}, []
+  vim.api.nvim_set_hl(0, "@punctuation.delimiter", { fg= cyan}) -- commas, colons
+  vim.api.nvim_set_hl(0, "@constructor",   { fg= cyan }) -- (), {}, []
+
+  -- comment
+  vim.api.nvim_set_hl(0, "@comment",             { fg=grey, italic=true })
+  vim.api.nvim_set_hl(0, "@string.documentation",             { fg=grey, italic=true })
+
+  -- highlight
+  vim.api.nvim_set_hl(0, "CursorLine",   { bg="#71797e" })
+  vim.api.nvim_set_hl(0, "Visual",        { bg= "#dcdddd"}) 
+
+  -- sidebar
+  vim.api.nvim_set_hl(0, "SignColumn",    { bg= black })
 end
 
 recolor()
 vim.api.nvim_create_autocmd("ColorScheme", { callback = recolor })
 
-vim.api.nvim_set_hl(0, "Normal", { bg = "#000000", fg = "#FFFFFF" })
+
+vim.api.nvim_set_hl(0, "Normal", { bg = black, fg = white })
+vim.api.nvim_set_hl(0, "NormalNC", { bg = black, fg = white })
+vim.api.nvim_set_hl(0, "CursorLineNC", { bg = black })
+vim.api.nvim_set_hl(0, "NormalFloat", { fg = black, bg = white })
+
+vim.highlight.priorities.semantic_tokens = 95
