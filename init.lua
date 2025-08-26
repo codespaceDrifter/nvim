@@ -1110,11 +1110,27 @@ local function recolor()
   vim.api.nvim_set_hl(0, "@string.documentation",             { fg=grey, italic=true })
 
   -- highlight
-  vim.api.nvim_set_hl(0, "CursorLine",   { bg="#71797e" })
   vim.api.nvim_set_hl(0, "Visual",        { bg= "#dcdddd"}) 
 
+    -- colors
+  vim.api.nvim_set_hl(0, "CursorLine",   { bg = "#2C2C2C" }) -- active window
+  vim.api.nvim_set_hl(0, "CursorLineNC", { bg = "#1A1A1A" }) -- inactive windows
+  -- ensure cursorline is on
+  vim.opt.cursorline = true
+  vim.opt.cursorlineopt = "both"
+  
+  -- make inactive windows use CursorLineNC
+  vim.api.nvim_create_autocmd("WinEnter", {
+    callback = function() vim.opt_local.winhighlight = "" end, -- normal behavior
+  })
+  vim.api.nvim_create_autocmd("WinLeave", {
+    callback = function() vim.opt_local.winhighlight = "CursorLine:CursorLineNC" end,
+  })
+
   -- sidebar
+  vim.api.nvim_set_hl(0, "CursorLineNr", { fg = white, bold = true })
   vim.api.nvim_set_hl(0, "SignColumn",    { bg= black })
+
 end
 
 recolor()
@@ -1123,7 +1139,7 @@ vim.api.nvim_create_autocmd("ColorScheme", { callback = recolor })
 
 vim.api.nvim_set_hl(0, "Normal", { bg = black, fg = white })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = black, fg = white })
-vim.api.nvim_set_hl(0, "CursorLineNC", { bg = black })
+
 vim.api.nvim_set_hl(0, "NormalFloat", { fg = black, bg = white })
 
 vim.highlight.priorities.semantic_tokens = 95
