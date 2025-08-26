@@ -1059,20 +1059,22 @@ local white = "#ffffff"
 local black = "#000000"
 
 local yellow = "#FFFF00"
+
 local green  = "#4bff21"
 
 local pink = "#ffbae4"
 
 local cyan = "#05d9e8"
 
-local red = "#ff2a6d"
+local orange = "#faac0f"
 
 local grey = "#808080"
 
 local function recolor()
   -- class types
-  vim.api.nvim_set_hl(0, "@type", {fg = red})
-  vim.api.nvim_set_hl(0, "@type.definition",     { fg=red, italic=true })
+  vim.api.nvim_set_hl(0, "@type", {fg = orange})
+  vim.api.nvim_set_hl(0, "@type.definition",     { fg=orange, italic=true })
+  vim.api.nvim_set_hl(0, "@type.builtin",     { fg=orange})
 
   -- variables
   vim.api.nvim_set_hl(0, "@variable",            { fg= white}) -- plain vars
@@ -1092,6 +1094,7 @@ local function recolor()
   vim.api.nvim_set_hl(0, "@keyword.function", { fg = yellow }) -- def
   vim.api.nvim_set_hl(0, "@keyword.conditional",      { fg = yellow }) -- if/else/while
   vim.api.nvim_set_hl(0, "@keyword.repeat",           { fg = yellow }) -- for/while
+  vim.api.nvim_set_hl(0, "@keyword.exception",           { fg = yellow }) 
 
   -- function names (defs + calls)
   vim.api.nvim_set_hl(0, "@function",         { fg = green,  bold = true })
@@ -1099,11 +1102,11 @@ local function recolor()
   vim.api.nvim_set_hl(0, "@function.method",    { fg = green,  bold = true })
   vim.api.nvim_set_hl(0, "@function.method.call",    { fg = green,  bold = true })
   vim.api.nvim_set_hl(0, "@operator",    { fg = green,  bold = true })
+  vim.api.nvim_set_hl(0, "@constructor",   { fg= green })
 
   -- parenthesis
   vim.api.nvim_set_hl(0, "@punctuation.bracket",   { fg= cyan }) -- (), {}, []
   vim.api.nvim_set_hl(0, "@punctuation.delimiter", { fg= cyan}) -- commas, colons
-  vim.api.nvim_set_hl(0, "@constructor",   { fg= cyan }) -- (), {}, []
 
   -- comment
   vim.api.nvim_set_hl(0, "@comment",             { fg=grey, italic=true })
