@@ -1088,6 +1088,7 @@ local function recolor()
   vim.api.nvim_set_hl(0, "@string",              { fg= pink})
   vim.api.nvim_set_hl(0, "@number",              { fg= pink})
   vim.api.nvim_set_hl(0, "@boolean",             { fg= pink})
+  vim.api.nvim_set_hl(0, "@constant.builtin",           { fg = pink })
 
   -- language keywords
   vim.api.nvim_set_hl(0, "@keyword", { fg = yellow }) -- def
@@ -1103,6 +1104,7 @@ local function recolor()
   vim.api.nvim_set_hl(0, "@function.method.call",    { fg = green,  bold = true })
   vim.api.nvim_set_hl(0, "@operator",    { fg = green,  bold = true })
   vim.api.nvim_set_hl(0, "@constructor",   { fg= green })
+  vim.api.nvim_set_hl(0, "@function.builtin",    { fg = green,  bold = true })
 
   -- parenthesis
   vim.api.nvim_set_hl(0, "@punctuation.bracket",   { fg= cyan }) -- (), {}, []
